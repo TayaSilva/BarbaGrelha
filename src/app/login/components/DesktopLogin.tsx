@@ -34,8 +34,7 @@ export default function DesktopLogin() {
 
 			const data = await response.json();
 
-			// Salva no localStorage
-			localStorage.setItem('nomeExibicao', data.user.nome);
+			localStorage.setItem('nomeExibicao', data.user.nomeExibicao);
 
 			// Vai pra página inicial
 			router.push('/');
