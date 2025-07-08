@@ -2,10 +2,15 @@
 
 import ResponsiveLayout from '@/components/Layout/ResponsiveLayout';
 import DesktopRegister from './components/DesktopRegister';
-import MobileLogin from '../login/components/MobileLogin';
+import MobileRegister from './components/MobileRegister';
+import TabletRegister from './components/Tabletregister';
 
 export default function Register() {
 	return (
-		<ResponsiveLayout mobile={<MobileLogin />} desktop={<DesktopRegister />} />
+		<ResponsiveLayout
+			mobile={<MobileRegister />}
+			desktop={<DesktopRegister />}
+			tablet={<TabletRegister />}
+		/>
 	);
 }

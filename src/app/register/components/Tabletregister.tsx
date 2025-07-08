@@ -1,13 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import DarkModeToggle from '@/components/DarkModeToggle/DarkModeToggle';
 import Image from 'next/image';
 import HambFundo2 from '@/images/hamb-fundo-2.png';
 import LogoBG from '@/images/logotipo-barbaGrelha.png';
-import Link from 'next/link';
+import { useState } from 'react';
 
-export default function DesktopRegister() {
+export default function TabletRegister() {
 	const [step, setStep] = useState(1);
 	const [formData, setFormData] = useState({
 		nome: '',
@@ -40,27 +38,28 @@ export default function DesktopRegister() {
 	};
 
 	return (
-		<div className="flex h-screen relative">
-			{/* Toggle */}
-			<div className="absolute top-4 left-0 right-0 px-4 flex justify-between items-center z-10">
-				<DarkModeToggle />
-				<Link
-					href="/"
-					className="text-principal-100 dark:text-principal-50 hover:underline transition-colors duration-200"
-				>
-					Voltar ao convés
-				</Link>
+		<div className="relative h-screen w-full overflow-hidden">
+			{/* Imagem de fundo com transparência */}
+			<div className="absolute inset-0 z-0">
+				<Image
+					src={HambFundo2}
+					alt="Imagem de fundo"
+					fill
+					className="object-cover"
+					priority
+				/>
+				<div className="absolute inset-0 bg-black bg-opacity-50" />
 			</div>
 
-			{/* Formulário */}
-			<div className="w-1/2 flex justify-center items-center">
+			{/* Container do card e logo */}
+			<div className="w-full h-full flex justify-center items-center z-10 relative">
 				<div className="relative w-full max-w-md">
 					{/* Logo */}
 					<div className="absolute -top-32 left-1/2 transform -translate-x-1/2 z-10">
 						<Image src={LogoBG} alt="Logo" width={150} height={150} />
 					</div>
 
-					<form className="flex bg-principal-50 shadow-md dark:shadow-principal-700 p-10 pt-20 rounded-md dark:bg-principal-200 flex-col gap-4 w-full">
+					<form className="flex bg-principal-50  justify-center shadow-md dark:shadow-principal-700 p-6 pt-20 rounded-md dark:bg-principal-200 flex-col gap-4 w-full">
 						<h2 className="text-2xl text-center text-imfell font-bold text-principal-800 dark:text-principal-500 mb-6">
 							Suba a bordo do navio
 						</h2>
@@ -173,19 +172,8 @@ export default function DesktopRegister() {
 							</>
 						)}
 
-						<div className="flex mt-8 justify-between items-center">
-							{step === 1 && (
-								<p className="text-sm text-center text-principal-700 dark:text-carbon-800 mt-6">
-									Já tem uma conta?{' '}
-									<a
-										href="/login"
-										className="text-principal-500 hover:underline hover:text-principal-700"
-									>
-										Faça login
-									</a>
-								</p>
-							)}
-
+						<div className="mt-2 flex flex-col items-center gap-4">
+							{/* Botão Voltar */}
 							{step > 1 && (
 								<button
 									type="button"
@@ -196,6 +184,20 @@ export default function DesktopRegister() {
 								</button>
 							)}
 
+							{/* Texto de login */}
+							{step === 1 && (
+								<p className="text-sm text-center text-principal-700 dark:text-carbon-800">
+									Já tem uma conta?{' '}
+									<a
+										href="/login"
+										className="text-principal-500 hover:underline hover:text-principal-700"
+									>
+										Faça login
+									</a>
+								</p>
+							)}
+
+							{/* Botão Próximo ou Cadastrar */}
 							{step < 3 ? (
 								<button
 									type="button"
@@ -222,22 +224,8 @@ export default function DesktopRegister() {
 								</button>
 							)}
 						</div>
-
-						{step === 3 && formData.senha !== formData.confirmarSenha && (
-							<p className="text-red-600 text-sm mt-2">As senhas não coincidem</p>
-						)}
 					</form>
 				</div>
-			</div>
-
-			{/* Imagem da direita */}
-			<div className="w-1/2 relative">
-				<Image
-					src={HambFundo2}
-					alt="Imagem de fundo"
-					fill
-					className="object-cover"
-				/>
 			</div>
 		</div>
 	);

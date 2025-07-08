@@ -27,7 +27,7 @@ export default function TabletLogin() {
 				</div>
 
 				{/* Card */}
-				<div className="w-full max-w-sm bg-principal-50 min-w-[480px] w-full bg-opacity-95 dark:bg-principal-200 dark:bg-opacity-95 p-8 rounded-md shadow-md backdrop-blur-md pt-28">
+				<div className="w-full max-w-sm bg-principal-50 min-w-[480px]  bg-opacity-95 dark:bg-principal-200 dark:bg-opacity-95 p-8 rounded-md shadow-md backdrop-blur-md pt-28">
 					<h2 className="text-2xl text-center text-imfell font-bold text-principal-800 dark:text-principal-500 mb-6">
 						Entre no navio
 					</h2>

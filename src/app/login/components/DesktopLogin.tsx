@@ -4,13 +4,20 @@ import DarkModeToggle from '@/components/DarkModeToggle/DarkModeToggle';
 import Image from 'next/image';
 import HambFundo from '@/images/hamb-fundo.png';
 import LogoBG from '@/images/logotipo-barbaGrelha.png';
+import Link from 'next/link';
 
 export default function DesktopLogin() {
 	return (
 		<div className="flex h-screen relative">
 			{/* DarkModeToggle fixado no topo esquerdo */}
-			<div className="absolute top-4 left-4 z-10">
+			<div className="absolute top-4 left-0 right-0 px-4 flex justify-between items-center z-10">
 				<DarkModeToggle />
+				<Link
+					href="/"
+					className="text-principal-100 dark:text-principal-50 hover:underline transition-colors duration-200"
+				>
+					Voltar ao convés
+				</Link>
 			</div>
 
 			{/* LADO ESQUERDO */}
