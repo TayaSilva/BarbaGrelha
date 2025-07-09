@@ -6,9 +6,11 @@ import Image from 'next/image';
 import HambFundo2 from '@/images/hamb-fundo-2.png';
 import LogoBG from '@/images/logotipo-barbaGrelha.png';
 import Link from 'next/link';
+import axios from 'axios';
 
 export default function DesktopRegister() {
 	const [step, setStep] = useState(1);
+
 	const [formData, setFormData] = useState({
 		nome: '',
 		telefone: '',
@@ -25,7 +27,29 @@ export default function DesktopRegister() {
 	});
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		const { name, value } = e.target;
+		setFormData((prev) => ({ ...prev, [name]: value }));
+
+		// Quando mudar o cep, tenta buscar o endereço
+		if (name === 'cep' && value.length === 8) {
+			buscarEnderecoPorCep(value);
+		}
+	};
+
+	const buscarEnderecoPorCep = async (cep: string) => {
+		try {
+			const res = await axios.get(`http://localhost:3001/user/cep/${cep}`);
+			const { rua, bairro, cidade } = res.data;
+
+			setFormData((prev) => ({
+				...prev,
+				rua: rua || '',
+				bairro: bairro || '',
+				cidade: cidade || '',
+			}));
+		} catch (error) {
+			console.log('Erro ao buscar CEP', error);
+		}
 	};
 
 	const nextStep = () => setStep((prev) => prev + 1);
@@ -104,35 +128,39 @@ export default function DesktopRegister() {
 									name="cep"
 									placeholder="CEP"
 									onChange={handleChange}
+									onBlur={() => buscarEnderecoPorCep(formData.cep)}
 									value={formData.cep}
 									className="p-3 rounded-md border text-principal-900 bg-principal-50"
 								/>
 								<input
 									name="rua"
 									placeholder="Rua"
-									onChange={handleChange}
 									value={formData.rua}
+									onChange={handleChange}
 									className="p-3 rounded-md border text-principal-900 bg-principal-50"
 								/>
+
+								<input
+									name="bairro"
+									placeholder="Bairro"
+									value={formData.bairro}
+									readOnly
+									className="p-3 rounded-md border text-principal-900 bg-principal-50"
+								/>
+
+								<input
+									name="cidade"
+									placeholder="Cidade"
+									value={formData.cidade}
+									readOnly
+									className="p-3 rounded-md border text-principal-900 bg-principal-50"
+								/>
+
 								<input
 									name="numero"
 									placeholder="Número"
 									onChange={handleChange}
 									value={formData.numero}
-									className="p-3 rounded-md border text-principal-900 bg-principal-50"
-								/>
-								<input
-									name="bairro"
-									placeholder="Bairro"
-									onChange={handleChange}
-									value={formData.bairro}
-									className="p-3 rounded-md border text-principal-900 bg-principal-50"
-								/>
-								<input
-									name="cidade"
-									placeholder="Cidade"
-									onChange={handleChange}
-									value={formData.cidade}
 									className="p-3 rounded-md border text-principal-900 bg-principal-50"
 								/>
 							</>

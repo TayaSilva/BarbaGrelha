@@ -2,11 +2,12 @@
 
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const axios = require('axios');
 const User = require('../models/user');
 
 const router = express.Router();
 
-// Rota de cadastro (register)
+// 📌 ROTA DE CADASTRO
 router.post('/register', async (req, res) => {
 	try {
 		const {
@@ -23,17 +24,14 @@ router.post('/register', async (req, res) => {
 			senha,
 		} = req.body;
 
-		// Verifica se já existe usuário com email ou cpf iguais
 		const userExists = await User.findOne({ $or: [{ email }, { cpf }] });
 		if (userExists) {
 			return res.status(400).json({ message: 'Email ou CPF já cadastrado' });
 		}
 
-		// Criptografa a senha
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(senha, salt);
 
-		// Cria o novo usuário com a senha criptografada
 		const newUser = new User({
 			nome,
 			telefone,
@@ -54,6 +52,32 @@ router.post('/register', async (req, res) => {
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ message: 'Erro no servidor' });
+	}
+});
+
+// 📌 ROTA PARA CONSULTAR O CEP
+router.get('/cep/:cep', async (req, res) => {
+	const { cep } = req.params;
+
+	try {
+		const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+		const data = response.data;
+
+		if (data.erro) {
+			return res.status(404).json({ message: 'CEP não encontrado' });
+		}
+
+		// ⚠️ Aqui mapeamos os campos corretamente pro front entender
+		res.json({
+			rua: data.logradouro || '',
+			bairro: data.bairro || '',
+			cidade: data.localidade || '',
+			uf: data.uf || '',
+			cep: data.cep || '',
+		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: 'Erro ao buscar o CEP' });
 	}
 });
 
